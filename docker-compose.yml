@@ -1,0 +1,11 @@
+version: '3'
+services:
+        web:
+                image: four_ws_flask
+                build: .
+                ports:
+                        - "8010:8086"
+                volumes:
+                        - ./volumes:/volumes
+                        - ./instance:/instance
+                restart: unless-stopped
