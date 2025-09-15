@@ -1,0 +1,212 @@
+---
+layout: custom
+---
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Dosis&display=swap');
+</style>
+<html>
+<head>
+    <title>Profile</title>
+</head>
+<link rel="stylesheet" href="./index.min.css" />
+<body>
+    <h1>Profile</h1>
+
+
+  <div class="as">
+        <div class="tooltip">
+        <a href="{{ site.baseurl }}/songrecinput.html" class="a1">Song</a>
+        <div class="bottom">Input Songs</div>
+        </div>
+        <div class="tooltip">
+        <a href="{{ site.baseurl }}/songquiz.html" class="a2">Suggestions</a>
+        </div>
+        <div class="tooltip">
+        <a href="{{ site.baseurl }}/toptracks.html" class="a4">Top Tracks</a>
+        <div class="bottom">Get a list of Top Tracks daily</div>
+        </div>
+        <div class="spotifyconnection">
+            <a href="{{ site.baseurl }}/spotify.html" class="a2">Connect to Spotify</a>
+            </div>
+        <div class="tooltip">
+          <a href="{{ site.baseurl }}/chatgptapi.html" class="a4">Chat GPT</a>
+          <div class="bottom">Ask Chat GPT for song recommendations</div>
+        </div>
+        <div class="tooltip" id="profile">
+        </div>
+       
+        <span id="loginStatus"></span>
+    </div>
+
+    <br>
+    <br>
+
+    <div id="welcome"></div>
+       
+    <br>
+    <br>
+
+    <p>Songs you may like: </p>
+    <div id="recommend"></div>
+
+
+</body>
+</html>
+
+<!-- Include the JavaScript file -->
+<script type="text/javascript" src="{{ site.baseurl }}/cookieCheck.js"></script>
+<script type="text/javascript" src="{{ site.baseurl }}/getUsername.js"></script>
+<script type="text/javascript" src="{{ site.baseurl }}/cookieCheckNotNav.js"></script>
+<script>
+
+    
+    let songId = [];
+
+    async function getCountry(username) {
+
+        var getUrl = "https://fourws.duckdns.org/api/users/" + username;
+
+        var getOptions = {
+            method: 'GET', 
+            mode: 'cors', 
+            cache: 'default', 
+            //credentials: 'include', 
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+
+
+        let response = await fetch(getUrl, getOptions)
+        
+        if (!response["ok"]) {
+            console.log("Error");
+            return;
+        }
+
+        let data = await response.json();
+        let country = data["country"];
+        return country; 
+    }
+
+    async function getSongs(country) {
+
+        // send fetch to backend's endpoint for user info
+        var baseurl = "https://fourws.duckdns.org/api/users/recommender";
+        
+        const body = {
+            country: country,
+        };
+
+        // Set Headers to support cross origin
+        //IMPORTANT!!!!!!! TO SUCCESSFULLY POST, YOU NEED TO REMOVE
+        // credentials:'include'
+        const requestOptions = {
+            method: 'POST',
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            //credentials: 'include', // include, *same-origin, omit
+            body: JSON.stringify(body),
+            headers: {
+                "content-type": "application/json"
+            },
+        };
+
+        let response = await fetch(baseurl, requestOptions)
+
+        if (!response["ok"]) {
+            console.log("error");
+        }
+
+        let data = await response.json();
+        return data; 
+
+    }
+
+    async function showSongs(country) {
+        let data = await getSongs(country);
+        console.log(data);
+
+        for (let i = 0; i < Object.keys(data).length; i++) {
+
+            songId[i] = data[i]["id"];
+
+            let a = document.createElement("a");
+            let text = document.createTextNode(data[i]["name"]);
+
+            a.appendChild(text);
+
+            a.href = await getSongsLink(songId[i]);
+
+            let br = document.createElement("br");
+
+            document.getElementById("recommend").appendChild(a);
+            document.getElementById("recommend").appendChild(br);
+
+
+
+        }
+
+    }
+
+
+    async function getSongsLink(songId) {
+
+        var getUrl = "https://fourws.duckdns.org/api/users/songlink";
+
+        var getOptions = {
+            method: 'GET', 
+            mode: 'cors', 
+            cache: 'default', 
+            //credentials: 'include', 
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+
+
+        let response = await fetch(getUrl, getOptions)
+        
+        if (!response["ok"]) {
+            console.log("Error");
+            return;
+        }
+
+        let data = await response.json();
+        console.log(data);
+
+        return data[songId];
+    }
+
+  
+
+    async function init() {
+        await welcome();
+        let username = await fetchUsernameOnly();
+        let country = await getCountry(username);
+        showSongs(country);
+    }
+
+    async function welcome() {
+
+        document.getElementById("welcome").innerHTML = "";
+
+        let p = document.createElement("p");
+        let text = "";
+        if (correctCookie2 === null) {
+            text = document.createTextNode("Welcome, Guest!");
+            p.appendChild(text);
+        } else {
+            let msg = "Welcome, " + await fetchUsernameOnly() + "!";
+            text = document.createTextNode(msg);
+            p.appendChild(text);
+        }
+
+        let center = document.createElement("center");
+        center.appendChild(p);
+        document.getElementById("welcome").appendChild(center);
+    }
+
+    init();
+</script>

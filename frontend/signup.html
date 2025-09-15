@@ -1,0 +1,151 @@
+---
+layout: custom
+---
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Dosis&display=swap');
+</style>
+<html>
+<head>
+    <title>Sign Up</title>
+</head>
+<link rel="stylesheet" href="./index.min.css" />
+<body>
+    <h1>Sign up</h1>
+
+    <div class="as">
+        <div class="tooltip">
+        <a href="songrecinput.html" class="a1">Song</a>
+        <div class="bottom">Input Songs</div>
+        </div>
+        <div class="tooltip">
+        <a href="songquiz.html" class="a2">Suggestions</a>
+        </div>
+        <div class="tooltip">
+        <a href="toptracks.html" class="a4">Top Tracks</a>
+        <div class="bottom">Get a list of Top Tracks daily</div>
+        </div>
+        <div class="spotifyconnection">
+            <a href="{{ site.baseurl }}/spotify.html" class="a2">Connect to Spotify</a>
+            </div>
+        <div class="tooltip" id="profile">
+        </div>
+        <span id="loginStatus"></span>
+    </div>
+
+    <div id="recommend"></div>
+
+    <form method="POST" action="javascript:create_user()">
+        <center>
+            <p><label>
+                Username:
+                <input type="text" name="username" id="username" required>
+            </label></p>
+            <p><label>
+                Password:
+                <input type="password" name="password" id="password" required>
+            </label></p>
+            <p><label>
+                Birthday:
+                <input type="date" name="dob" id="dob" required>
+            </label></p>
+           
+    <!-- sort albums -->
+    <form style="display: inline;">
+        <label for="countrySelect">Country:</label>
+        <select name="countrySelect" id="countrySelect">
+            <option value="us">US</option>
+        </select>
+    </form>
+            <p><button>Sign up</button></p>
+        </center>
+    </form>
+
+
+
+    <div id="message"></div>
+
+</body>
+</html>
+
+<!-- Include the JavaScript file -->
+<script type="text/javascript" src="{{ site.baseurl }}/cookieCheck.js"></script>
+<script>
+
+    let country = document.getElementById("countrySelect").value;
+
+    function create_user() {
+        document.getElementById("message").innerHTML = "";
+
+
+        var baseurl = "https://fourws.duckdns.org/api/users/";
+       
+        const body = {
+            uid: document.getElementById("username").value,
+            password: document.getElementById("password").value,
+            dob: document.getElementById("dob").value,
+            country: document.getElementById("countrySelect").value
+
+        };
+
+
+        // Set Headers to support cross origin
+        //IMPORTANT!!!!!!! TO SUCCESSFULLY POST, YOU NEED TO REMOVE
+        // credentials:'include'
+        const requestOptions = {
+            method: 'POST',
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            //credentials: 'include', // include, *same-origin, omit
+            body: JSON.stringify(body),
+            headers: {
+                "content-type": "application/json"
+            },
+        };
+
+        // Fetch JWT
+        fetch(baseurl, requestOptions)
+        .then(response => {
+            // trap error response from Web API
+            if (!response.ok) {
+                const errorMsg = response.status + " error";
+                console.log(errorMsg);
+
+                if (response.status === 400) {
+                    console.log("Incorrect username or password");
+                    
+                    let p = document.createElement("p");
+                    let text = document.createTextNode("Incorrect username or password.");
+                    p.appendChild(text);
+                    document.getElementById("error").appendChild(p);
+                }
+            
+                return;
+            }
+
+            response.json().then(data => {
+                console.log(data);
+
+                let p = document.createElement("p");
+                let text = document.createTextNode("Account successfully created. Click ");
+                p.appendChild(text);
+
+                let a = document.createElement("a");
+                text = document.createTextNode("here");
+                a.appendChild(text);
+                a.href = "https://lwu1822.github.io/fourWsFrontend/login.html";
+                p.appendChild(a);
+
+                text = document.createTextNode(" to login.");
+                p.appendChild(text);
+
+                document.getElementById("message").appendChild(p);
+
+
+            })
+
+        })
+    }  
+
+   
+</script>

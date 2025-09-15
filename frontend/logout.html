@@ -1,0 +1,24 @@
+---
+layout: custom
+---
+
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Dosis&display=swap');
+</style>
+<html>
+<head>
+    <title>Logout</title>
+</head>
+<link rel="stylesheet" href="./index.min.css" />
+<body>
+    
+</body>
+</html>
+
+<!-- Include the JavaScript file -->
+<script>
+    document.cookie = "session=;expires=Thu, 01 Jan 1970 00:00:00 UTC";
+
+    window.location.href = "{{ site.baseurl }}/";
+</script>

@@ -1,0 +1,278 @@
+---
+layout: custom
+---
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Dosis&display=swap');
+</style>
+<html>
+<head>
+    <title>Song Recommender</title>
+    <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/stuff.css">
+</head>
+<link rel="stylesheet" href="./index.min.css" />
+<body>
+<h1>Song Recommender</h1>
+
+ 
+
+<div class="as">
+  <div class="tooltip">
+    <a href="{{ site.baseurl }}/songrecinput.html" class="a1">Song</a>
+    <div class="bottom">Input Songs</div>
+  </div>
+  <div class="tooltip">
+    <a href="{{ site.baseurl }}/songquiz.html" class="a2">Suggestions</a>
+  </div>
+  <div class="tooltip">
+    <a href="{{ site.baseurl }}/toptracks.html" class="a4">Top Tracks</a>
+    <div class="bottom">Get a list of Top Tracks daily</div>
+  </div>
+  <div class="spotifyconnection">
+    <a href="{{ site.baseurl }}/spotify.html" class="a2">Connect to Spotify</a>
+    </div>
+  <div class="tooltip">
+    <a href="{{ site.baseurl }}/chatgptapi.html" class="a4">Chat GPT</a>
+    <div class="bottom">Ask Chat GPT for song recommendations</div>
+  </div>
+  <div class="tooltip" id="profile">
+  </div>
+ 
+  <span id="loginStatus"></span>
+
+</div>
+
+
+<br>
+<br>
+
+<form style="display: inline;">
+        <label for="genre">Genre:</label>
+        <select name="genre" id="genre">
+            <option value="pop">Pop</option>
+        </select>
+</form>
+
+<button style="display: inline;" onclick="setGenre()">Go</button>
+
+<br>
+<br>
+
+<p>Do you like this song?</p>
+<div id="possibleSong"></div>
+<br>
+
+<button class="button1" onclick="record1()" id="button1">Yes</button>
+<!-- <button class="button2" onclick="record2()" id="button2">I like the artist but not/not sure about the song</button> -->
+<button class="button3" onclick="record3()" id="button3">No/not sure</button>
+
+
+<p id="rec" class="songRec"></p>
+
+<!-- Include the JavaScript file -->
+
+<script type="text/javascript" src="{{ site.baseurl }}/cookieCheck.js"></script>
+<script>
+
+    let songList = ["You Belong With Me - Taylor Swift", "You'll Be There - George Strait", "Hey Jude - The Beatles", "Jailhouse Rock - Elvis Presley"]
+    let currentSong = "";
+    let i = 0;
+
+    let likeSongs = [];
+
+    let genre = "";
+
+
+    function record1() {
+        console.log(currentSong);
+        addSong(i);
+        i++;
+        showSongs(i);
+    }
+
+    function record2() {
+        console.log("2");
+    }
+
+    function record3() {
+        console.log("3");
+        i++;
+        showSongs(i);
+    }
+
+
+    function addSong(i) {
+        console.log("i: " + i);
+        likeSongs.push(songList[i]);
+    }
+
+    let recommendedSongs = []
+
+async function songrec() {
+    document.getElementById("rec").innerHTML = "";
+
+    let song = "";
+    let song2 = "";
+    let song3 = "";
+    let song4 = "";
+    let song5 = "";
+
+    if (likeSongs.length == 1) {
+        song = likeSongs[0];
+    }
+    if (likeSongs.length == 2) {
+        song = likeSongs[0];
+        song2 = likeSongs[1];
+    }
+    if (likeSongs.length == 3) {
+        song = likeSongs[0];
+        song2 = likeSongs[1];
+        song3 = likeSongs[2];
+    }
+    if (likeSongs.length == 4) {
+        song = likeSongs[0];
+        song2 = likeSongs[1];
+        song3 = likeSongs[2];
+        song4 = likeSongs[3];
+    }
+    if (likeSongs.length == 5) {
+        song = likeSongs[0];
+        song2 = likeSongs[1];
+        song3 = likeSongs[2];
+        song4 = likeSongs[3];
+        song5 = likeSongs[4];
+    }
+
+
+
+        // send fetch to backend's endpoint for user info
+        var baseurl = "https://fourws.duckdns.org/api/users/songrec";
+        
+        const body = {
+            song: song,
+            song2: song2,
+            song3: song3,
+            song4: song4,
+            song5: song5
+        };
+
+        // Set Headers to support cross origin
+        //IMPORTANT!!!!!!! TO SUCCESSFULLY POST, YOU NEED TO REMOVE
+        // credentials:'include'
+        const requestOptions = {
+            method: 'POST',
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            //credentials: 'include', // include, *same-origin, omit
+            body: JSON.stringify(body),
+            headers: {
+                "content-type": "application/json"
+            },
+        };
+
+        let response = await fetch(baseurl, requestOptions)
+
+        if (!response["ok"]) {
+            console.log("error");
+        }
+
+        let data = await response.json();
+        console.log(data);
+
+        songList = [];
+        let p = document.createElement("p");
+        let text = document.createTextNode("Recommended songs:");
+        p.appendChild(text);
+        document.getElementById("rec").appendChild(p);
+        for (let i = 0; i < Object.keys(data).length; i++) {
+          let p = document.createElement("p");
+          let text = document.createTextNode(data[i]);
+          p.appendChild(text);
+          document.getElementById("rec").appendChild(p);
+
+          recommendedSongs.push(data[i]);
+
+          if (i < 5) {
+            songList.push(data[i]);
+          }
+
+        }
+
+        console.log(recommendedSongs);
+        console.log("songList: " + songList);
+
+        i = 0; 
+        genre = "";
+        showSongs(0);
+
+        // Store the recommendation in local storage
+        localStorage.setItem('rec', JSON.stringify(recommendedSongs));
+
+    }
+
+
+    async function init() {
+        await showSongs(0);
+        //await songrec();
+        //console.log(recommendedSongs);
+    }
+
+    async function showSongs(i) {
+        if (genre === "pop") {
+            songList = ["You Belong With Me - Taylor Swift", "Hot N Cold - Katy Perry", "Wake Up Call - Maroon 5", "...Baby One More Time - Britney Spears", "Party In The U.S.A. - Miley Cyrus"]
+        }
+
+        if (i === 0) {
+            likeSongs = [];
+        }
+        if (i < songList.length) {
+            document.getElementById("possibleSong").innerHTML = "";
+
+            let p = document.createElement("p");
+            let text = document.createTextNode(songList[i]);
+            p.appendChild(text);
+            document.getElementById("possibleSong").appendChild(p);
+
+            currentSong = songList[i];
+        }
+        if (i === songList.length) {
+            console.log(likeSongs);
+            await songrec();
+        }
+    }
+
+
+
+    init();
+
+
+    async function setGenre() {
+        let genreLocal = document.getElementById("genre").value;
+        genre = genreLocal;
+        console.log(genre);
+
+    }
+
+    window.onload = function() {
+    // Check if there is a recommendation in local storage
+    let storedRec = localStorage.getItem('rec');
+    if (storedRec) {
+        let recommendedSongs = JSON.parse(storedRec);
+        let p = document.createElement("p");
+        let text = document.createTextNode("Recommended songs:");
+        p.appendChild(text);
+        document.getElementById("rec").appendChild(p);
+        for (let i = 0; i < recommendedSongs.length; i++) {
+            let p = document.createElement("p");
+            let text = document.createTextNode(recommendedSongs[i]);
+            p.appendChild(text);
+            document.getElementById("rec").appendChild(p);
+        }
+    }
+    init();
+    }
+</script>
+</body>
+</html>
+
+

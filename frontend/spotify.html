@@ -1,0 +1,141 @@
+---
+layout: custom
+---
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Dosis&display=swap');
+
+</style>
+
+<html>
+<head>
+  <title>Song Recommender</title>
+</head>
+<link rel="stylesheet" href="./index.min.css" />
+<body>
+  
+  <h1>Song Recommender</h1>
+  <div class="as">
+    <div class="tooltip">
+      <a href="{{ site.baseurl }}/songrecinput.html" class="a1">Song</a>
+      <div class="bottom">Input Songs</div>
+    </div>
+    <div class="tooltip">
+      <a href="{{ site.baseurl }}/songquiz.html" class="a2">Suggestions</a>
+    </div>
+    <div class="tooltip">
+      <a href="{{ site.baseurl }}/toptracks.html" class="a4">Top Tracks</a>
+      <div class="bottom">Get a list of Top Tracks daily</div>
+    </div>
+    <div class="spotifyconnection">
+      <a href="{{ site.baseurl }}/spotify.html" class="a2">Connect to Spotify</a>
+      </div>
+    <div class="tooltip">
+      <a href="{{ site.baseurl }}/chatgptapi.html" class="a4">Chat GPT</a>
+      <div class="bottom">Ask Chat GPT for song recommendations</div>
+    </div>
+    <div class="tooltip" id="profile"></div>
+
+    <span id="loginStatus"></span>
+  </div>
+
+  <div id="playlistContainer"></div>
+  <button id="getPlaylistsBtn">Get Playlists</button>
+
+
+
+  <button type="button" onclick="window.open('{{ site.baseurl }}/spotify copy.html')">Copy your link to open your playlist!</button>
+  
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    // videos used: https://www.youtube.com/watch?v=G_WFk4wg9fk,https://www.youtube.com/watch?v=dGFUQf5pcpk
+    const CLIENT_ID = "62aa1d37681b4e8bb286a27868b2ef2a";
+    const SPOTIFY_AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize";
+    const REDIRECT_URL_AFTER_LOGIN = "https://lwu1822.github.io/fourWsFrontend/spotify.html";
+    const SPACE_DELIMITER = "%20";
+    const SCOPES = [
+      "user-read-currently-playing",
+      "user-read-playback-state",
+      "user-top-read",
+      "user-read-recently-played",
+      "playlist-read-private"
+    ];
+    const SCOPES_URL_PARAM = SCOPES.join(SPACE_DELIMITER);
+    const PLAYLISTS_ENDPOINT = "https://api.spotify.com/v1/me/playlists";
+    const ARTIST_ENDPOINT = "https://api.spotify.com/v1/me/player/currently-playing";
+    const token = localStorage.getItem("accessToken");
+
+   
+    function handleGetPlaylists() {
+      axios
+        .get(PLAYLISTS_ENDPOINT, {
+          headers: {
+            Authorization: "Bearer " + token
+          }
+        })
+        .then(function(response) {
+          renderPlaylists(response.data.items);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    }
+
+    function renderPlaylists(playlists) {
+      const playlistContainer = document.getElementById("playlistContainer");
+
+      playlists.forEach(function(item) {
+        const playlistLink = document.createElement("a");
+        playlistLink.textContent = item.name;
+        playlistLink.href = item.external_urls.spotify;
+        playlistLink.target = "_blank"; // Open in a new tab
+        playlistContainer.appendChild(playlistLink);
+        playlistContainer.appendChild(document.createElement("br")); // Add line break
+      });
+    }
+
+    const getPlaylistsBtn = document.getElementById("getPlaylistsBtn");
+    getPlaylistsBtn.addEventListener("click", handleGetPlaylists);
+
+    function getReturnedParamsFromSpotifyAuth(hash) {
+      const stringAfterHashtag = hash.substring(1);
+      const paramsInUrl = stringAfterHashtag.split("&");
+      const paramsSplitUp = paramsInUrl.reduce(function(accumulator, currentValue) {
+        const [key, value] = currentValue.split("=");
+        accumulator[key] = value;
+        return accumulator;
+      }, {});
+
+      return paramsSplitUp;
+    }
+
+    function handleLogin() {
+      window.location = `${SPOTIFY_AUTHORIZE_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URL_AFTER_LOGIN}&scope=${SCOPES_URL_PARAM}&response_type=token&show_dialog=true`;
+    }
+
+    function processReturnedParamsFromSpotifyAuth() {
+      if (window.location.hash) {
+        const { access_token, expires_in, token_type } = getReturnedParamsFromSpotifyAuth(window.location.hash);
+
+        localStorage.clear();
+
+        localStorage.setItem("accessToken", access_token);
+        localStorage.setItem("tokenType", token_type);
+        localStorage.setItem("expiresIn", expires_in);
+      }
+    }
+
+    processReturnedParamsFromSpotifyAuth();
+
+    const loginButton = document.createElement("button");
+    loginButton.textContent = "Login to spotify!";
+    loginButton.addEventListener("click", handleLogin);
+
+    const container = document.createElement("div");
+    container.className = "container";
+    container.appendChild(loginButton);
+
+    document.body.appendChild(container);
+  </script>
+</body>
+</html>

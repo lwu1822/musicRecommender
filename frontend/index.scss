@@ -1,0 +1,227 @@
+body {
+    background-color: #1a2026;
+    font-family: "Inter", sans-serif;
+    color: #fff;
+    text-align: center;
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  @keyframes bounce {
+    from {
+      transform: translateY(-30px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0px);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes pbounce {
+    0% {
+      transform: translateY(-30px);
+      opacity: 0;
+    }
+    40% {
+      transform: translateY(-30px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0px);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes abounce {
+    0% {
+      transform: translateY(50px);
+      opacity: 0;
+    }
+    40% {
+      transform: translateY(50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0px);
+      opacity: 1;
+    }
+  }
+  
+  h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    background: linear-gradient(
+      45deg,
+      rgba(3, 165, 252, 1) 0%,
+      rgba(28, 220, 237, 1) 100%
+    );
+    /*
+    background: #00416a;
+    background: -webkit-linear-gradient(
+      to right,
+      #00416a,
+      #e4e5e6
+    ); 
+    background: linear-gradient(
+      to right,
+      #00416a,
+      #e4e5e6
+    );
+    background: #005aa7;
+    background: -webkit-linear-gradient(
+      to right,
+      #005aa7,
+      #fffde4
+    );
+    background: linear-gradient(
+      to right,
+      #005aa7,
+      #fffde4
+    );*/
+    height: 4.25rem;
+    background-size: contain;
+    background-position: top left;
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    animation-name: bounce;
+    animation-delay: 100ms;
+    animation-duration: 1000ms;
+    animation-timing-function: cubic-bezier(0.331, 0.441, 0.444, 1.649);
+  }
+  
+  p {
+    font-style: italic;
+    margin-top: 20px;
+    animation-name: pbounce;
+    animation-delay: 100ms;
+    animation-duration: 2000ms;
+    animation-timing-function: cubic-bezier(0.331, 0.441, 0.444, 1.649);
+  }
+  
+  .main {
+    width: 35rem;
+  }
+  
+  a {
+    margin: 5px 10px;
+    text-decoration: none;
+    color: #606e7c;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+  
+  a:hover {
+    border-bottom: none;
+    color: #fff;
+  }
+  
+  .as {
+    .a1 {
+      animation-name: abounce;
+      animation-duration: 3000ms;
+      animation-timing-function: cubic-bezier(0.331, 0.441, 0.444, 1.649);
+    }
+    .a2 {
+      animation-name: abounce;
+      animation-duration: 3200ms;
+      animation-timing-function: cubic-bezier(0.331, 0.441, 0.444, 1.649);
+    }
+    .a3 {
+      animation-name: abounce;
+      animation-duration: 3400ms;
+      animation-timing-function: cubic-bezier(0.331, 0.441, 0.444, 1.649);
+    }
+    .a4 {
+      animation-name: abounce;
+      animation-duration: 3600ms;
+      animation-timing-function: cubic-bezier(0.331, 0.441, 0.444, 1.649);
+    }
+    .a5 {
+      animation-name: abounce;
+      animation-duration: 3800ms;
+      animation-timing-function: cubic-bezier(0.331, 0.441, 0.444, 1.649);
+    }
+    .a6 {
+      animation-name: abounce;
+      animation-duration: 4000ms;
+      animation-timing-function: cubic-bezier(0.331, 0.441, 0.444, 1.649);
+    }
+    margin-top: 20px;
+  }
+  
+  .tooltip {
+    display: inline-block;
+    position: relative;
+    text-align: left;
+  }
+  
+  .tooltip .bottom {
+    text-align: center;
+    min-width: 200px;
+    top: 40px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    padding: 10px 20px;
+    background-color: #21282e;
+    color: #fff;
+    font-weight: normal;
+    font-size: 13px;
+    border-radius: 8px;
+    position: absolute;
+    z-index: 99999999;
+    box-sizing: border-box;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.8s;
+  }
+  
+  .tooltip:hover .bottom {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  .tooltip .bottom i {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -12px;
+    width: 24px;
+    height: 12px;
+    overflow: hidden;
+  }
+  
+  .tooltip .bottom i::after {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    left: 50%;
+    transform: translate(-50%, 50%) rotate(45deg);
+    background-color: #21282e;
+    color: #fff;
+  }
+  
+  @media screen and (max-width: 800px) {
+    .main {
+      width: 320px;
+    }
+  
+    .main h1 {
+      font-size: 2rem;
+    }
+  
+    .main p {
+      margin-top: 0;
+    }
+  }
+  
+  ::selection {
+    background-color: #606e7c;
+    color: white;
+  }

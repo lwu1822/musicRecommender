@@ -1,0 +1,142 @@
+---
+layout: custom
+---
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Dosis&display=swap');
+</style>
+<html>
+<head>
+    <title>Song Recommender</title>
+</head>
+<link rel="stylesheet" href="./index.min.css" />
+<body>
+<h1>Song Recommender</h1>
+
+ 
+
+<div class="as">
+  <div class="tooltip">
+    <a href="{{ site.baseurl }}/songrecinput.html" class="a1">Song</a>
+    <div class="bottom">Input Songs</div>
+  </div>
+  <div class="tooltip">
+    <a href="{{ site.baseurl }}/songquiz.html" class="a2">Suggestions</a>
+  </div>
+  <div class="tooltip">
+    <a href="{{ site.baseurl }}/toptracks.html" class="a4">Top Tracks</a>
+    <div class="bottom">Get a list of Top Tracks daily</div>
+  </div>
+  <div class="spotifyconnection">
+    <a href="{{ site.baseurl }}/tspotify.html" class="a2">Connect to Spotify</a>
+    </div>
+  <div class="tooltip">
+    <a href="{{ site.baseurl }}/chatgptapi.html" class="a4">Chat GPT</a>
+    <div class="bottom">Ask Chat GPT for song recommendations</div>
+  </div>
+  <div class="tooltip" id="profile">
+  </div>
+ 
+  <span id="loginStatus"></span>
+
+</div>
+
+
+<br>
+<br>
+
+<p>Enter three songs you like:</p>
+<p>Note: Please enter your songs in the following format:</p>
+<p>"Song name" - "Album name" (without quotes)</p>
+    <p>Song 1:</p>
+    <input type="text" id="song1">
+    <p>Song 2:</p>
+    <input type="text" id="song2">
+    <p>Song 3:</p>
+    <input type="text" id="song3">
+    <br>
+    <br>
+    <button onclick="songrec()">Recommend Songs!</button>
+    <br>
+    <br>
+    <p>Please note: Because the song recommender uses machine learning, it may take around five seconds for the program to recommend songs.</p>
+    <p>Recommended Songs:</p>
+    <p id="rec"></p>
+<!-- Include the JavaScript file -->
+
+<script type="text/javascript" src="{{ site.baseurl }}/cookieCheck.js"></script>
+<script>
+
+// Save song inputs to local storage
+function saveRecommendationToLocalStorage() {
+  let recommendation = document.getElementById("rec").innerHTML;
+  localStorage.setItem('recommendation', recommendation);
+}
+
+// Retrieve songs from local storage and populate the input fields
+function loadRecommendationFromLocalStorage() {
+  let recommendation = localStorage.getItem('recommendation');
+  document.getElementById("rec").innerHTML = recommendation;
+}
+
+window.onload = function() {
+  loadRecommendationFromLocalStorage();
+};
+
+async function songrec() {
+    document.getElementById("rec").innerHTML = "";
+
+    let song = document.getElementById("song1").value;
+    let song2 = document.getElementById("song2").value;
+    let song3 = document.getElementById("song3").value;
+
+        // send fetch to backend's endpoint for user info
+        var baseurl = "https://fourws.duckdns.org/api/users/songrec";
+        
+        const body = {
+            song: song,
+            song2: song2,
+            song3: song3, 
+            song4: "",
+            song5: ""
+        };
+
+        // Set Headers to support cross origin
+        //IMPORTANT!!!!!!! TO SUCCESSFULLY POST, YOU NEED TO REMOVE
+        // credentials:'include'
+        const requestOptions = {
+            method: 'POST',
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            //credentials: 'include', // include, *same-origin, omit
+            body: JSON.stringify(body),
+            headers: {
+                "content-type": "application/json"
+            },
+        };
+
+        let response = await fetch(baseurl, requestOptions)
+
+        if (!response["ok"]) {
+            console.log("error");
+        }
+
+        let data = await response.json();
+        console.log(data);
+
+        for (let i = 0; i < Object.keys(data).length; i++) {
+          let p = document.createElement("p");
+          let text = document.createTextNode(data[i]);
+          p.appendChild(text);
+          document.getElementById("rec").appendChild(p);
+        }
+
+        saveRecommendationToLocalStorage();
+
+    }
+
+</script>
+</body>
+</html>
+
+

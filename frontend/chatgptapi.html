@@ -1,0 +1,93 @@
+---
+layout: custom
+---
+
+<html>
+<head>
+  <title>ChatGPT Recommendation</title>
+</head>
+<link rel="stylesheet" href="./index.min.css" />
+<body>
+  <h1>ChatGPT Recommendation</h1>
+
+  <div class="as">
+    <div class="tooltip">
+      <a href="{{ site.baseurl }}/songrecinput.html" class="a1">Song</a>
+      <div class="bottom">Input Songs</div>
+    </div>
+    <div class="tooltip">
+      <a href="{{ site.baseurl }}/songquiz.html" class="a2">Suggestions</a>
+    </div>
+    <div class="tooltip">
+      <a href="{{ site.baseurl }}/toptracks.html" class="a4">Top Tracks</a>
+      <div class="bottom">Get a list of Top Tracks daily</div>
+    </div>
+    <div class="spotifyconnection">
+      <a href="{{ site.baseurl }}/spotify.html" class="a2">Connect to Spotify</a>
+      </div>
+    <div class="tooltip">
+      <a href="{{ site.baseurl }}/chatgptapi.html" class="a4">Chat GPT</a>
+      <div class="bottom">Ask Chat GPT for song recommendations</div>
+    </div>
+    <div class="tooltip">
+      <a href="{{ site.baseurl }}/login.html" class="a6">Login</a>
+    </div>
+  </div>
+
+  <form id="userInputForm">
+    <label for="userInput">Enter your music preference:</label>
+    <input type="text" id="userInput" required>
+    <button type="submit">Submit</button>
+  </form>
+
+  <div id="outputContainer"></div>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    const userInputForm = document.getElementById('userInputForm');
+    const userInputInput = document.getElementById('userInput');
+    const outputContainer = document.getElementById('outputContainer');
+
+    // Encode the API key using Base64
+    const encodedApiKey = "c2stdGZ3cHNseUo5dW9rZGdhSE9pWUJUM0JsYmtGSjBCNlNEeDhwV1Z5U3hyVUNLZkZ4";
+    const decodedApiKey = atob(encodedApiKey);
+    const authorizationHeader = 'Bearer ' + decodedApiKey;
+
+    userInputForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const userInput = userInputInput.value;
+      userInputInput.value = '';
+
+      try {
+        const response = await axios.post('https://api.openai.com/v1/chat/completions', {
+        messages: [
+            { role: 'system', content: 'You are a user requesting music recommendations.' },
+            { role: 'user', content: userInput }
+        ],
+        model: 'gpt-3.5-turbo' 
+        }, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': authorizationHeader
+        }
+        });
+
+        const assistantReply = response.data.choices[0].message.content;
+        displayAssistantReply(assistantReply);
+      } catch (error) {
+        console.error('Error calling ChatGPT API:', error);
+        console.error('Error response:', error.response);
+        console.error('Error message:', error.message);
+        displayAssistantReply('Sorry, an error occurred while processing your request.');
+        }
+    });
+
+    function displayAssistantReply(reply) {
+      const replyElement = document.createElement('p');
+      replyElement.textContent = 'Assistant: ' + reply;
+      outputContainer.appendChild(replyElement);
+    }
+  </script>
+</body>
+</html>
