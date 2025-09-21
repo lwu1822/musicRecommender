@@ -7,7 +7,7 @@ layout: custom
     <meta charset="UTF-8" />
     <meta http-equiv="Permissions-Policy" content="interest-cohort=()">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>fourWs</title>
+    <title>Music Recommender</title>
     <link href="https://rsms.me/inter/inter.css" rel="stylesheet" />
     <link
       rel="stylesheet"
@@ -19,7 +19,7 @@ layout: custom
   </head>
   <body>
     <div class="main">
-  <h1>fourWs</h1>
+  <h1>Music Recommender</h1>
   <p>
     Recommending songs through machine learning.
   </p>

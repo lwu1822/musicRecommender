@@ -22,3 +22,7 @@ data/test/api*
 
 data/test3/
 data/test/artist*
+
+
+frontend/.bundle
+frontend/vendor
