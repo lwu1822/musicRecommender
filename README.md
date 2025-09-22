@@ -1,4 +1,4 @@
-Currently making big changes to project
+Original project migrated to new repo, currently making big changes to project
 
 
 # Frontend
