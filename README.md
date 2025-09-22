@@ -1,3 +1,6 @@
+Currently making big changes to project
+
+
 # Frontend
 
 sudo apt install ruby-bundler (for bundle exec jekyll serve)
