@@ -9,7 +9,7 @@ layout: custom
 <head>
     <title>Artist Recommendor</title>
 </head>
-<link rel="stylesheet" href="{{ site.baseurl }}/index.min.css" />
+<link rel="stylesheet" href="https://lwu1822.github.io/musicRecommender/frontend/index.min.css" />
 <body>
 <h1>Artist Recommendor</h1>
 
