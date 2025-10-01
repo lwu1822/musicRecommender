@@ -15,7 +15,7 @@ layout: custom
       integrity="sha512-NmLkDIU1C/C88wi324HBc+S2kLhi08PN5GDeUVVVC/BVt/9Izdsc9SVeVfA1UZbY3sHUlDSyRXhCzHfr6hmPPw=="
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="./index.min.css" />
+    <link rel="stylesheet" href="{{ site.baseurl }}/index.min.css" />
   </head>
   <body>
     <div class="main">
