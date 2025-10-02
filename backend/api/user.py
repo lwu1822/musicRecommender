@@ -34,15 +34,15 @@ from contentrec import generate_recommendation
 import ast
 
 
-from flask_cors import CORS
+# from flask_cors import CORS
 # CORS(app)
 
-app.config['SECRET_KEY'] = 'secretkey'
-app.config['JWT_TOKEN_LOCATION'] = ['cookies']
-app.config['JWT_COOKIE_CSRF_PROTECT'] = True
-app.config['JWT_CSRF_CHECK_FORM'] = True
+# app.config['SECRET_KEY'] = 'secretkey'
+# app.config['JWT_TOKEN_LOCATION'] = ['cookies']
+# app.config['JWT_COOKIE_CSRF_PROTECT'] = True
+# app.config['JWT_CSRF_CHECK_FORM'] = True
 
-jwt = JWTManager(app)
+# jwt = JWTManager(app)
 
 
 user_api = Blueprint('user_api', __name__,

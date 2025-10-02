@@ -51,6 +51,12 @@ app.register_blueprint(player_api)
 app.register_blueprint(app_projects) # register app pages
 app.register_blueprint(song_api) 
 
+app.config['SECRET_KEY'] = 'secretkey'
+app.config['JWT_TOKEN_LOCATION'] = ['cookies']
+app.config['JWT_COOKIE_CSRF_PROTECT'] = True
+app.config['JWT_CSRF_CHECK_FORM'] = True
+
+jwt = JWTManager(app)
 
 # <<< START CORS CONFIGURATION >>>
 # Define the list of trusted origins (your frontends)
