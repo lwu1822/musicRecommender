@@ -35,7 +35,7 @@ import ast
 
 
 from flask_cors import CORS
-CORS(app)
+# CORS(app)
 
 app.config['SECRET_KEY'] = 'secretkey'
 app.config['JWT_TOKEN_LOCATION'] = ['cookies']

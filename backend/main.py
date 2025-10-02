@@ -2,6 +2,7 @@ import threading
 
 # import "packages" from flask
 from flask import render_template  # import render_template from "public" flask libraries
+from flask_cors import CORS  # Import CORS here
 
 # import "packages" from "this" project
 from __init__ import app,db  # Definitions initialization
@@ -49,6 +50,19 @@ app.register_blueprint(user_api) # register api routes
 app.register_blueprint(player_api)
 app.register_blueprint(app_projects) # register app pages
 app.register_blueprint(song_api) 
+
+
+# <<< START CORS CONFIGURATION >>>
+# Define the list of trusted origins (your frontends)
+origins = [
+    "http://127.0.0.1:4000",      # Your local frontend for testing
+    "http://localhost:4000",       # Also include localhost for good measure
+    "https://lwu1822.github.io"    # Your DEPLOYED frontend website
+]
+
+# Initialize CORS for the entire application
+CORS(app, origins=origins, supports_credentials=True)
+# <<< END CORS CONFIGURATION >>>
 
 
 """ 
@@ -106,15 +120,6 @@ def activate_job():  # activate these items
 
 # this runs the application on the development server
 if __name__ == "__main__":
-    # change name for testing
-    from flask_cors import CORS
-    # origins = [
-        # "http://127.0.0.1:4000",  # Your local Jekyll server
-        # "http://localhost:4000"   # Also include localhost for good measure
-    # ]   
-
-    # Initialize CORS with specific origins and support for credentials
-    # CORS(app, origins=origins, supports_credentials=True)
-    cors = CORS(app)
+    # CORS is now handled globally, so no need for a separate setup here.
     #initSongs()
     app.run(debug=True, host="0.0.0.0", port="8086")
