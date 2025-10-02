@@ -69,16 +69,16 @@ jwt = JWTManager(app)
 
 # <<< START CORS CONFIGURATION >>>
 # Define the list of trusted origins (your frontends)
-origins = [
-    "http://127.0.0.1:4000",      # Your local frontend for testing
-    "http://localhost:4000",       # Also include localhost for good measure
-    "https://lwu1822.github.io"    # Your DEPLOYED frontend website
-]
+# origins = [
+#     "http://127.0.0.1:4000",      # Your local frontend for testing
+#     "http://localhost:4000",       # Also include localhost for good measure
+#     "https://lwu1822.github.io"    # Your DEPLOYED frontend website
+# ]
 
 # Initialize CORS for the entire application
-CORS(app, origins=origins, supports_credentials=True)
+# CORS(app, origins=origins, supports_credentials=True)
 # <<< END CORS CONFIGURATION >>>
-
+CORS(app)
 
 """ 
 JWT test
