@@ -108,13 +108,13 @@ def activate_job():  # activate these items
 if __name__ == "__main__":
     # change name for testing
     from flask_cors import CORS
-    origins = [
-        "http://127.0.0.1:4000",  # Your local Jekyll server
-        "http://localhost:4000"   # Also include localhost for good measure
-    ]   
+    # origins = [
+        # "http://127.0.0.1:4000",  # Your local Jekyll server
+        # "http://localhost:4000"   # Also include localhost for good measure
+    # ]   
 
     # Initialize CORS with specific origins and support for credentials
-    CORS(app, origins=origins, supports_credentials=True)
-    # cors = CORS(app)
+    # CORS(app, origins=origins, supports_credentials=True)
+    cors = CORS(app)
     #initSongs()
     app.run(debug=True, host="0.0.0.0", port="8086")
