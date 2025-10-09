@@ -10,7 +10,7 @@ if (correctCookie === null) {
     a.setAttribute("class", "a6");
     let text = document.createTextNode("Login");
     a.appendChild(text);
-    a.href = "https://lwu1822.github.io/fourWsFrontend/login";
+    a.href = "https://lwu1822.github.io/musicRecommender/frontend/login";
 
     let div = document.createElement("div");
     div.setAttribute("class", "tooltip");
@@ -43,7 +43,7 @@ if (correctCookie === null) {
     let text = document.createTextNode("Log Out");
     a.appendChild(text);
     //a.href = window.location.origin + "/logout";
-    a.href = "https://lwu1822.github.io/fourWsFrontend/logout";
+    a.href = "https://lwu1822.github.io/musicRecommender/frontend/logout";
 
     let div = document.createElement("div");
     div.setAttribute("class", "tooltip");
@@ -59,7 +59,7 @@ if (correctCookie === null) {
     text = document.createTextNode("Profile");
     a.appendChild(text);
     // a.href = window.location.origin + "/profile";
-    a.href = "https://lwu1822.github.io/fourWsFrontend/profile";
+    a.href = "https://lwu1822.github.io/musicRecommender/frontend/profile";
 
 
     div = document.createElement("div");
