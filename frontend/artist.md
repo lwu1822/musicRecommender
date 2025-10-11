@@ -52,7 +52,7 @@ layout: custom
     <p id="rec"></p>
 <!-- Include the JavaScript file -->
 
-<script type="text/javascript" src="{{ site.baseurl }}/cookieCheck.js"></script>
+<script type="text/javascript" src="{{ site.baseurl }}/frontend/cookieCheck.js"></script>
 <script>
 
 
