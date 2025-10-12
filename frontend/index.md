@@ -28,7 +28,7 @@ layout: custom
       <a href="songrecinput.html" class="a1">Song</a>
       <div class="bottom">Input Songs</div>
     </div>
-    <div class="tooltip">
+    <!-- <div class="tooltip">
       <a href="songquiz.html" class="a2">Suggestions</a>
     </div>
     <div class="tooltip">
@@ -37,7 +37,7 @@ layout: custom
         <div class="spotifyconnection">
             <a href="spotify.html" class="a2">Connect to Spotify</a>
             </div>
-    </div>
+    </div> -->
     <div class="tooltip">
       <a href="chatgptapi.html" class="a4">Chat GPT</a>
       <div class="bottom">Ask Chat GPT for song recommendations</div>

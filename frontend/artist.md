@@ -23,10 +23,10 @@ layout: custom
         <a href="artist.html" class="a2">Artist</a>
         <div class="bottom">Input Artists</div>
         </div>
-        <div class="tooltip">
+        <!-- <div class="tooltip">
         <a href="toptracks.html" class="a4">Top Tracks</a>
         <div class="bottom">Get a list of Top Tracks daily</div>
-        </div>
+        </div> -->
         <div class="tooltip">
           <a href="chatgptapi.html" class="a4">Chat GPT</a>
           <div class="bottom">Ask Chat GPT for song recommendations</div>
