@@ -6,21 +6,21 @@ layout: custom
 <head>
   <title>ChatGPT Recommendation</title>
 </head>
-<link rel="stylesheet" href="{{ site.baseurl }}/index.min.css" />
+<link rel="stylesheet" href="{{ site.baseurl }}/frontend/index.min.css" />
 <body>
   <h1>ChatGPT Recommendation</h1>
 
   <div class="as">
     <div class="tooltip">
-      <a href="{{ site.baseurl }}/songrecinput.html" class="a1">Song</a>
+      <a href="{{ site.baseurl }}/frontend/songrecinput.html" class="a1">Song</a>
       <div class="bottom">Input Songs</div>
     </div>
     <div class="tooltip">
-      <a href="{{ site.baseurl }}/chatgptapi.html" class="a4">Chat GPT</a>
+      <a href="{{ site.baseurl }}/frontend/chatgptapi.html" class="a4">Chat GPT</a>
       <div class="bottom">Ask Chat GPT for song recommendations</div>
     </div>
     <div class="tooltip">
-      <a href="{{ site.baseurl }}/login.html" class="a6">Login</a>
+      <a href="{{ site.baseurl }}/frontend/login.html" class="a6">Login</a>
     </div>
   </div>
 
@@ -43,13 +43,11 @@ layout: custom
       const userPrompt = userInput.value;
       userInput.value = '';
       
-      // Disable button and show loading message
       submitButton.disabled = true;
       outputContainer.innerHTML = '<p>Getting recommendations...</p>';
 
       try {
-        // This is the URL to YOUR backend endpoint
-        const response = await fetch('http://127.0.0.1:8086/api/users/chat', {
+        const response = await fetch('https://musicrecback.duckdns.org/api/users/chat', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -68,17 +66,14 @@ layout: custom
         console.error('Error fetching recommendation:', error);
         displayAssistantReply('Sorry, an error occurred while processing your request.');
       } finally {
-        // Re-enable the button
         submitButton.disabled = false;
       }
     });
 
     function displayAssistantReply(reply) {
-      // Create a new paragraph for the reply
       const replyElement = document.createElement('p');
       replyElement.textContent = reply;
       
-      // Clear the "loading" message and append the new reply
       outputContainer.innerHTML = '';
       outputContainer.appendChild(replyElement);
     }

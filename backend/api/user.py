@@ -302,7 +302,6 @@ class UserAPI:
                 return {'message': 'No prompt provided'}, 400
 
             try:
-                # IMPORTANT: Set your Gemini API key as an environment variable
                 api_key = os.getenv("GEMINI_API_KEY")
                 if not api_key:
                     return {'message': 'Gemini API key not configured'}, 500
@@ -310,7 +309,6 @@ class UserAPI:
                 genai.configure(api_key=api_key)
                 model = genai.GenerativeModel('gemini-2.5-flash-lite')
                 
-                # Add context to the prompt for better results
                 full_prompt = f"You are a helpful music recommender. A user wants suggestions based on this preference: '{prompt}'. Provide a list of 5 music names and that song's artists in list form, and only music names and its artists, nothing else."
                 response = model.generate_content(full_prompt)
 
