@@ -5,6 +5,9 @@ from datetime import datetime
 
 from model.users import User
 
+import google.generativeai as genai
+import os
+
 
 from __init__ import app,db  # Definitions initialization
 #db.init_app(app)
@@ -290,7 +293,33 @@ class UserAPI:
                 except:
                     pass
             return jsonify(returnSong)
-            
+
+    class _GeminiChat(Resource):
+        def post(self):
+            body = request.get_json()
+            prompt = body.get('prompt')
+            if not prompt:
+                return {'message': 'No prompt provided'}, 400
+
+            try:
+                # IMPORTANT: Set your Gemini API key as an environment variable
+                api_key = os.getenv("GEMINI_API_KEY")
+                if not api_key:
+                    return {'message': 'Gemini API key not configured'}, 500
+
+                genai.configure(api_key=api_key)
+                model = genai.GenerativeModel('gemini-2.5-flash-lite')
+                
+                # Add context to the prompt for better results
+                full_prompt = f"You are a helpful music recommender. A user wants suggestions based on this preference: '{prompt}'. Provide a list of 5 music names and that song's artists in list form, and only music names and its artists, nothing else."
+                response = model.generate_content(full_prompt)
+
+                return jsonify({"reply": response.text})
+
+            except Exception as e:
+                print(f"Gemini API error: {e}")
+                return {'message': 'Error communicating with the Gemini model'}, 500
+                
 
     # building RESTapi endpoint
     api.add_resource(_CRUD, '/')
@@ -301,3 +330,4 @@ class UserAPI:
     api.add_resource(_Recommender, '/recommender')  
     api.add_resource(_SongRecommender, '/songrec')  
     api.add_resource(_Songlink, '/songlink')  
+    api.add_resource(_GeminiChat, '/chat')
