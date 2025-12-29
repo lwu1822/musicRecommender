@@ -1,5 +1,7 @@
 https://lwu1822.github.io/musicRecommender/frontend/
 
+(Backend currently down as I've ran out of AWS credits. Will get it back up asap)
+
 Original project migrated to new repo, currently making big changes to project
 
 
